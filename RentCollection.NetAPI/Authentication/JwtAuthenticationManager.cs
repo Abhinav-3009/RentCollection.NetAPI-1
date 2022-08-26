@@ -30,7 +30,11 @@ namespace RentCollection.NetAPI.Authentication
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim("username", user.Username)
+
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
