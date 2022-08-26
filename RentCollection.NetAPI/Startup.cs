@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RentCollection.NetAPI.Authentication;
+using RentCollection.NetAPI.Models;
 
 namespace RentCollection.NetAPI
 {
@@ -33,7 +35,14 @@ namespace RentCollection.NetAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //  JWT Authentication
+            // Database
+            services.AddDbContext<RentCollectionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionType1")));
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
+            // JWT Authentication
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -65,7 +74,7 @@ namespace RentCollection.NetAPI
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "SwaggerDemoApplication",
+                    Title = "Rent Collection Application",
                     Version = "v1"
                 });
             });
@@ -91,7 +100,7 @@ namespace RentCollection.NetAPI
 
             app.UseSwagger();
             app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SwaggerDemoApplication V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rent Collection Application V1");
                 c.RoutePrefix = string.Empty;
             });
         }

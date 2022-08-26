@@ -48,6 +48,7 @@ namespace RentCollection.NetAPI.Controllers
 
         [HttpPost]
         [Route("Register")]
+        [AllowAnonymous]
         public IActionResult Register(User user)
         {
             if(!ModelState.IsValid)
