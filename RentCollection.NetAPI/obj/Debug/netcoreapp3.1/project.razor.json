@@ -1,0 +1,19 @@
+{
+  "FilePath": "/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/RentCollection.NetAPI.csproj",
+  "Configuration": {
+    "ConfigurationName": "MVC-3.0",
+    "LanguageVersion": "3.0",
+    "Extensions": [
+      {
+        "ExtensionName": "MVC-3.0"
+      }
+    ]
+  },
+  "ProjectWorkspaceState": {
+    "TagHelpers": [],
+    "CSharpLanguageVersion": 800
+  },
+  "RootNamespace": "RentCollection.NetAPI",
+  "Documents": [],
+  "SerializationFormat": "0.2"
+}
