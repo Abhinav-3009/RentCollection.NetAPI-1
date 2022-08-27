@@ -32,7 +32,8 @@ CREATE TABLE Rentals (
     Amount FLOAT NOT NULL,
     IsDeleted BIT NOT NULL DEFAULT(0),
     PRIMARY KEY(RentalId),
-    FOREIGN KEY(UserId) REFERENCES Users(UserID) ON DELETE CASCADE
+    FOREIGN KEY(UserId) REFERENCES Users(UserID) ON DELETE CASCADE,
+    CONSTRAINT Unique_Rental UNIQUE(UserId, Title)
 );
 
 CREATE TABLE Tenants (
@@ -149,4 +150,9 @@ CREATE TABLE Payments (
     FOREIGN KEY(InvoiceId) REFERENCES Invoices(InvoiceId) ON DELETE CASCADE,
     FOREIGN KEY(ModeOfPaymentId) REFERENCES ModeOfPayment(ModeOfPaymentId) ON DELETE CASCADE
 );
+```
+
+### Changes In Database
+```
+ALTER TABLE Rentals ADD CONSTRAINT Unique_Rental UNIQUE(UserId, Title);
 ```

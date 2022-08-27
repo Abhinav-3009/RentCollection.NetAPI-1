@@ -23,6 +23,7 @@
     <None Remove="System.IdentityModel.Tokens.Jwt" />
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <None Remove="Validations\Rental\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validations\" />
@@ -31,6 +32,7 @@
     <Folder Include="Security\" />
     <Folder Include="Authentication\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Validations\Rental\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
