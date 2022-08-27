@@ -40,8 +40,8 @@ CREATE TABLE Tenants (
     TenantId INT NOT NULL IDENTITY(1, 1),
     UserId INT NOT NULL,
     FullName VARCHAR(50) NOT NULL,
-    Contact VARCHAR(15) NOT NULL UNIQUE,
-    Email VARCHAR(50) NOT NULL UNIQUE,
+    Contact VARCHAR(15) NOT NULL,
+    Email VARCHAR(50),
     Password VARCHAR(100) NOT NULL,
     IsDeleted BIT NOT NULL DEFAULT(0),
     PRIMARY KEY(TenantId),
@@ -153,6 +153,13 @@ CREATE TABLE Payments (
 ```
 
 ### Changes In Database
-```
+```sql
 ALTER TABLE Rentals ADD CONSTRAINT Unique_Rental UNIQUE(UserId, Title);
+
+ALTER TABLE Tenants ALTER COLUMN Email VARCHAR(50);
+
+ALTER TABLE Tenants ADD CONSTRAINT Unique_Contact UNIQUE(UserId, Contact);
+
+ALTER TABLE Allocation ALTER COLUMN AllocatedOn DATE;
+
 ```

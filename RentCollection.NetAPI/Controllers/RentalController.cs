@@ -28,7 +28,6 @@ namespace RentCollection.NetAPI.Controllers
         [Route("Add")]
         public IActionResult Add(Rental rental)
         {
-           //this.UserId = Convert.ToInt32(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
 
             if (!ModelState.IsValid)
                 return BadRequest(new { error = "Model is invalid" });

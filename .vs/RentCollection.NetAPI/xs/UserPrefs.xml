@@ -1,21 +1,30 @@
 ﻿<Properties StartupConfiguration="{9E27D775-46AF-4E6D-B5E3-FB829E70E304}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.RentCollection.NetAPI PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="RentCollection.NetAPI/Controllers/AllocationController.cs">
+    <Files>
+      <File FileName="RentCollection.NetAPI/Controllers/AllocationController.cs" Line="48" Column="96" />
+      <File FileName="RentCollection.NetAPI/Models/Allocation.cs" Line="14" Column="10" />
+      <File FileName="RentCollection.NetAPI/RecordAccessibility/RentalAccess.cs" Line="18" Column="6" />
+      <File FileName="RentCollection.NetAPI/RecordAccessibility/TenantAccess.cs" Line="7" Column="5" />
+      <File FileName="RentCollection.NetAPI/RecordAccessibility/AllocationAccess.cs" Line="12" Column="10" />
+      <File FileName="RentCollection.NetAPI/ViewModels/Deallocate.cs" Line="6" Column="28" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="RentCollection.NetAPI" expanded="True">
             <Node name="RentCollection.NetAPI" expanded="True">
-              <Node name="Controllers" expanded="True" />
-              <Node name="Models" expanded="True">
-                <Node name="Allocation.cs" selected="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="AllocationController.cs" selected="True" />
               </Node>
-              <Node name="Properties" expanded="True" />
-              <Node name="Security" expanded="True" />
-              <Node name="Validations" expanded="True">
-                <Node name="Rental" expanded="True" />
-                <Node name="User" expanded="True" />
-              </Node>
+              <Node name="Models" expanded="True" />
+              <Node name="RecordAccessibility" expanded="True" />
+              <Node name="ViewModels" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -25,10 +34,5 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.RentCollection.NetAPI PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

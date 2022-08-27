@@ -24,6 +24,9 @@
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
     <None Remove="Validations\Rental\" />
+    <None Remove="Azure\" />
+    <None Remove="Azure.Storage.Blobs" />
+    <None Remove="RecordAccessibility\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validations\" />
@@ -33,6 +36,8 @@
     <Folder Include="Authentication\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Validations\Rental\" />
+    <Folder Include="Azure\" />
+    <Folder Include="RecordAccessibility\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
@@ -49,5 +54,6 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.13.0" />
   </ItemGroup>
 </Project>
