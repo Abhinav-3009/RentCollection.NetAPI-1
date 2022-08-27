@@ -56,6 +56,8 @@ namespace RentCollection.NetAPI.Controllers
 
             try
             {
+                // Check if Contact is verified using OTP
+
                 // encrypt password
                 user.Password = Encryption.Encrypt(user.Password);
 
