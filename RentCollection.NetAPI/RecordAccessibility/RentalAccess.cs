@@ -11,7 +11,7 @@ namespace RentCollection.NetAPI.RecordAccessibility
         public static bool Check(int rentalId, int userId)
         {
             var rentals = db.Rentals.ToList();
-            var rental = (from r in rentals where r.RentalId == rentalId && r.UserId == userId select r).FirstOrDefault();
+            var rental = (from r in rentals where r.RentalId == rentalId && r.UserId == userId && r.IsDeleted == false select r).FirstOrDefault();
 
             return rental != null ? true : false;
         }

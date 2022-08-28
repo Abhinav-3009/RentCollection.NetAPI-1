@@ -16,7 +16,7 @@ namespace RentCollection.NetAPI.Models
         public int AllocationId { get; set; }
         public int RentalId { get; set; }
         public int TenantId { get; set; }
-        public DateTime AllocatedOn { get; set; }
+        public DateTime? AllocatedOn { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
 

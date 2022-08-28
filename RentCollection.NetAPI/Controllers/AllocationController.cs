@@ -83,10 +83,11 @@ namespace RentCollection.NetAPI.Controllers
                 if (allocation == null)
                     return NotFound(new { error = "Allocation not found" });
 
-                // Check for any outstanding invoice.
-                // Deallocate the rental and tenant once all invoices have been settled.
+                //Check for any outstanding invoice.
 
-                allocation.IsActive = false;
+                //Deallocate the rental and tenant once all invoices have been settled.
+
+               allocation.IsActive = false;
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -154,7 +155,7 @@ namespace RentCollection.NetAPI.Controllers
 
                 if (allocation.IsActive)
                     return Unauthorized("Active allocation cannot be deleted, First deallocate the allocation and then delete the allocation");
-                
+
                 allocation.IsDeleted = true;
                 db.SaveChanges();
 

@@ -162,4 +162,9 @@ ALTER TABLE Tenants ADD CONSTRAINT Unique_Contact UNIQUE(UserId, Contact);
 
 ALTER TABLE Allocation ALTER COLUMN AllocatedOn DATE;
 
+ALTER TABLE Invoices ADD IsDeleted BIT NOT NULL DEFAULT(0);
+
+ALTER TABLE ElectricityMeterReading ADD IsDeleted BIT NOT NULL DEFAULT(0);
+
+
 ```

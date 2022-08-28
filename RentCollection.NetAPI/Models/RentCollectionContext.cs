@@ -192,6 +192,9 @@ namespace RentCollection.NetAPI.Models
 
             modelBuilder.Entity<Rental>(entity =>
             {
+                entity.HasIndex(e => new { e.UserId, e.Title }, "Unique_Rental")
+                    .IsUnique();
+
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasMaxLength(200)
@@ -210,10 +213,7 @@ namespace RentCollection.NetAPI.Models
 
             modelBuilder.Entity<Tenant>(entity =>
             {
-                entity.HasIndex(e => e.Email, "UQ__Tenants__A9D1053438F97420")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Contact, "UQ__Tenants__F7C04665568BE0D5")
+                entity.HasIndex(e => new { e.UserId, e.Contact }, "Unique_Contact")
                     .IsUnique();
 
                 entity.Property(e => e.Contact)
@@ -222,7 +222,6 @@ namespace RentCollection.NetAPI.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Email)
-                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 

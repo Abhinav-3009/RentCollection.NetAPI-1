@@ -16,6 +16,7 @@ namespace RentCollection.NetAPI.Validations.User
             var user = (from u in users where u.Username == username select u).FirstOrDefault();
 
             return user == null ? true : false;
+            return true;
         }
     }
 }

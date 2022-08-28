@@ -15,6 +15,7 @@ namespace RentCollection.NetAPI.Models
         public int InvoiceId { get; set; }
         public int AllocationId { get; set; }
         public DateTime InvoiceDate { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual Allocation Allocation { get; set; }
         public virtual ICollection<InvoiceItem> InvoiceItems { get; set; }

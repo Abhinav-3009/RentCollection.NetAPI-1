@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -15,18 +14,10 @@ namespace RentCollection.NetAPI.Models
 
         public int TenantId { get; set; }
         public int UserId { get; set; }
-
-        [Required(ErrorMessage = "Full Name required")]
         public string FullName { get; set; }
-
-        [Required(ErrorMessage = "Contact required")]
         public string Contact { get; set; }
-
         public string Email { get; set; }
-
-        [Required(ErrorMessage = "Password required")]
         public string Password { get; set; }
-
         public bool IsDeleted { get; set; }
 
         public virtual User User { get; set; }
