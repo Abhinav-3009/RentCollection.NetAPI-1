@@ -166,5 +166,8 @@ ALTER TABLE Invoices ADD IsDeleted BIT NOT NULL DEFAULT(0);
 
 ALTER TABLE ElectricityMeterReading ADD IsDeleted BIT NOT NULL DEFAULT(0);
 
+ALTER TABLE ElectricityMeterReading ADD GenerateBill BIT NOT NULL DEFAULT(0);
+
+ALTER TABLE ElectricityMeterReading ADD Charges INT NOT NULL;
 
 ```
