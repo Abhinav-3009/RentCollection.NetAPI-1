@@ -9,11 +9,11 @@ namespace RentCollection.NetAPI.ViewModels
     {
 
         [Required(ErrorMessage = "Rental Id required")]
-        [RentalAssociatedToAccountAttribute(ErrorMessage = "Rental record is not associated with your account")]
+        [RentalAssociatedWithAccountAttribute(ErrorMessage = "Rental record is not associated with your account")]
         public int RentalId { get; set; }
 
         [Required(ErrorMessage = "Tenant Id required")]
-        [TenantAssociatedToAccountAttribute(ErrorMessage = "Tenant record is not associated with your account")]
+        [TenantAssociatedWithAccountAttribute(ErrorMessage = "Tenant record is not associated with your account")]
         public int TenantId { get; set; }
 
     }

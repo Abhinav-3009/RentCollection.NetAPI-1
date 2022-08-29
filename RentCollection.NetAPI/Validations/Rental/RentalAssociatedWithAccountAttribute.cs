@@ -1,13 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using RentCollection.NetAPI.Models;
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Linq;
 
-namespace RentCollection.NetAPI.Validations.Tenant
+namespace RentCollection.NetAPI.Validations.Rental
 {
-    public class TenantAssociatedToAccountAttribute : ValidationAttribute
+    public class RentalAssociatedWithAccountAttribute : ValidationAttribute
     {
         private RentCollectionContext db = new RentCollectionContext();
 
@@ -19,11 +19,12 @@ namespace RentCollection.NetAPI.Validations.Tenant
             var httpContextAccessor = (IHttpContextAccessor)context.GetService(typeof(IHttpContextAccessor));
             this.UserId = Convert.ToInt32(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
 
-            int tenantId = Convert.ToInt32(value.ToString());
-            var tenants = db.Tenants.ToList();
-            var tenant = (from t in tenants where t.TenantId == tenantId && t.UserId == this.UserId && t.IsDeleted == false select t).FirstOrDefault();
 
-            if (tenant != null)
+            int rentalId = Convert.ToInt32(value.ToString());
+            var rentals = db.Rentals.ToList();
+            var rental = (from r in rentals where r.RentalId == rentalId && r.UserId == this.UserId && r.IsDeleted == false select r).FirstOrDefault();
+
+            if (rental != null)
                 return ValidationResult.Success;
 
             return new ValidationResult(FormatErrorMessage(context.DisplayName), new[] { context.MemberName });

@@ -18,10 +18,10 @@ namespace RentCollection.NetAPI.Models
 
         public int AllocationId { get; set; }
 
-        [RentalAssociatedToAccountAttribute(ErrorMessage = "Rental record is not associated with your account")]
+        [RentalAssociatedWithAccountAttribute(ErrorMessage = "Rental record is not associated with your account")]
         public int RentalId { get; set; }
 
-        [TenantAssociatedToAccountAttribute(ErrorMessage = "Tenant record is not associated with your account")]
+        [TenantAssociatedWithAccountAttribute(ErrorMessage = "Tenant record is not associated with your account")]
         public int TenantId { get; set; }
 
         [Required(ErrorMessage = "Allocation Date is required")]
