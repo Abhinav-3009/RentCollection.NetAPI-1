@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using RentCollection.NetAPI.Validations.Rental;
 
 #nullable disable
 
@@ -14,10 +16,20 @@ namespace RentCollection.NetAPI.Models
         }
 
         public int RentalId { get; set; }
+
+        [Required(ErrorMessage = "User Id required")]
         public int UserId { get; set; }
+
+        [Required(ErrorMessage = "Title required")]
+        [UniqueRentalTitleAttribute(ErrorMessage = "Title is already taken")]
         public string Title { get; set; }
+
         public string Description { get; set; }
+
+        [Required(ErrorMessage = "Amount required")]
+        [Range(int.MaxValue, 1, ErrorMessage = "Amount must be greater than zero")]
         public double Amount { get; set; }
+
         public bool IsDeleted { get; set; }
 
         public virtual User User { get; set; }

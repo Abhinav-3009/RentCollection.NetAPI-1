@@ -21,7 +21,7 @@ namespace RentCollection.NetAPI.Controllers
 
         private readonly RentCollectionContext db = new RentCollectionContext();
 
-        private readonly string[] InvoiceItemCategoryList = { "Wifi", "Mess" };
+        private readonly string[] InvoiceItemCategoryList = { "Wifi", "Mess", "Rent", "Electricity Bill" };
 
         private readonly string[] DocumentTypeList = { "Aadhaar", "Pancard", "Driving License" };
 

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using RentCollection.NetAPI.Validations.Rental;
+using RentCollection.NetAPI.Validations.Tenant;
 
 #nullable disable
 
@@ -14,8 +17,14 @@ namespace RentCollection.NetAPI.Models
         }
 
         public int AllocationId { get; set; }
+
+        [RentalAssociatedToAccountAttribute(ErrorMessage = "Rental record is not associated with your account")]
         public int RentalId { get; set; }
+
+        [TenantAssociatedToAccountAttribute(ErrorMessage = "Tenant record is not associated with your account")]
         public int TenantId { get; set; }
+
+        [Required(ErrorMessage = "Allocation Date is required")]
         public DateTime? AllocatedOn { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

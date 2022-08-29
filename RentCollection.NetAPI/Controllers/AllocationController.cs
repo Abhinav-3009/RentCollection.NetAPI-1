@@ -38,11 +38,6 @@ namespace RentCollection.NetAPI.Controllers
 
             try
             {
-                if (!RentalAccess.Check(allocation.RentalId, this.UserId))
-                    return Unauthorized("Rental record is not associated with your account");
-
-                if (!TenantAccess.Check(allocation.TenantId, this.UserId))
-                    return Unauthorized("Tenant record is not associated with your account");
 
                 if (!AllocationAccess.CheckIfAllocationEntityAreOccupied(allocation.TenantId, allocation.RentalId))
                     return BadRequest(new { error = "Tenant or Rental is already allocated" });
@@ -70,12 +65,6 @@ namespace RentCollection.NetAPI.Controllers
 
             try
             {
-
-                if (!RentalAccess.Check(allocationStateUpdate.RentalId, this.UserId))
-                    return Unauthorized("Rental record is not associated with your account");
-
-                if (!TenantAccess.Check(allocationStateUpdate.TenantId, this.UserId))
-                    return Unauthorized("Tenant record is not associated with your account");
 
                 var allocations = db.Allocations.ToList();
                 Allocation allocation = (from a in allocations where a.RentalId == allocationStateUpdate.RentalId && a.TenantId == allocationStateUpdate.TenantId select a).FirstOrDefault();
@@ -109,12 +98,6 @@ namespace RentCollection.NetAPI.Controllers
 
             try
             {
-
-                if (!RentalAccess.Check(allocationStateUpdate.RentalId, this.UserId))
-                    return Unauthorized("Rental record is not associated with your account");
-
-                if (!TenantAccess.Check(allocationStateUpdate.TenantId, this.UserId))
-                    return Unauthorized("Tenant record is not associated with your account");
 
                 if (!AllocationAccess.CheckIfAllocationExists(allocationStateUpdate.TenantId, allocationStateUpdate.RentalId))
                     return NotFound(new { error = "Allocation not found" });
