@@ -12,6 +12,8 @@ namespace RentCollection.NetAPI.Models
         public int Units { get; set; }
         public DateTime TakenOn { get; set; }
         public bool IsDeleted { get; set; }
+        public bool GenerateBill { get; set; }
+        public int Charges { get; set; }
 
         public virtual Rental Rental { get; set; }
     }

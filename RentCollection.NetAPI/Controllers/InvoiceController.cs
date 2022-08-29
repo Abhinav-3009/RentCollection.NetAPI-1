@@ -59,6 +59,8 @@ namespace RentCollection.NetAPI.Controllers
             Invoice invoice = new Invoice();
             try
             {
+                // Check if Invoice is associated with account
+
                 invoice = this.InvoiceRepository.GetInvoice(invoiceId);
             }
             catch (Exception e)
