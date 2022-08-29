@@ -99,9 +99,6 @@ namespace RentCollection.NetAPI.Controllers
             try
             {
 
-                if (!AllocationAccess.CheckIfAllocationExists(allocationStateUpdate.TenantId, allocationStateUpdate.RentalId))
-                    return NotFound(new { error = "Allocation not found" });
-
                 var allocations = db.Allocations.ToList();
                 Allocation allocation = (from a in allocations where a.RentalId == allocationStateUpdate.RentalId && a.TenantId == allocationStateUpdate.TenantId select a).FirstOrDefault();
 

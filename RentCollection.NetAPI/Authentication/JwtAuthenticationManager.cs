@@ -36,7 +36,7 @@ namespace RentCollection.NetAPI.Authentication
                     new Claim("username", user.Username)
 
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddDays(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
 

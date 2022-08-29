@@ -28,6 +28,9 @@
     <None Remove="Azure.Storage.Blobs" />
     <None Remove="RecordAccessibility\" />
     <None Remove="Validations\Tenant\" />
+    <None Remove="Validations\Allocation\" />
+    <None Remove="ServiceInterface\" />
+    <None Remove="ServiceImplementation\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validations\" />
@@ -40,6 +43,9 @@
     <Folder Include="Azure\" />
     <Folder Include="RecordAccessibility\" />
     <Folder Include="Validations\Tenant\" />
+    <Folder Include="Validations\Allocation\" />
+    <Folder Include="ServiceInterface\" />
+    <Folder Include="ServiceImplementation\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />

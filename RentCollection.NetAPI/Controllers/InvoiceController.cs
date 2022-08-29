@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentCollection.NetAPI.Models;
 using RentCollection.NetAPI.RecordAccessibility;
+using RentCollection.NetAPI.ServiceImplementation;
+using RentCollection.NetAPI.ServiceInterface;
 using RentCollection.NetAPI.ViewModels;
 
 namespace RentCollection.NetAPI.Controllers
@@ -17,18 +19,20 @@ namespace RentCollection.NetAPI.Controllers
     [Authorize]
     public class InvoiceController : ControllerBase
     {
+        private IInvoiceRepository InvoiceRepository;
         private readonly RentCollectionContext db = new RentCollectionContext();
 
         private int UserId;
 
         public InvoiceController(IHttpContextAccessor httpContextAccessor)
         {
+            this.InvoiceRepository = new InvoiceRepository(new RentCollectionContext());
             this.UserId = Convert.ToInt32(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
         }
 
         [HttpPost]
-        [Route("Add")]
-        public IActionResult Add(Invoice invoice)
+        [Route("Create")]
+        public IActionResult Create(Invoice invoice)
         {
 
             if (!ModelState.IsValid)
@@ -36,19 +40,6 @@ namespace RentCollection.NetAPI.Controllers
 
             try
             {
-                Allocation allocation = db.Allocations.Find(invoice.AllocationId);
-                if (allocation == null)
-                    return NotFound(new { error = "Allocation not found" });
-
-                int rentalId = allocation.RentalId;
-                int tenantId = allocation.TenantId;
-
-                if (!RentalAccess.Check(rentalId, this.UserId) || !TenantAccess.Check(tenantId, this.UserId))
-                    return Unauthorized("Allocation is not associated with your account");
-
-                if (!allocation.IsActive)
-                    return BadRequest("Allocation is inactive");
-
                 db.Invoices.Add(invoice);
                 db.SaveChanges();
 
@@ -59,6 +50,23 @@ namespace RentCollection.NetAPI.Controllers
             }
 
             return Ok(new { success = "Invoice created successfully", invoice = invoice });
+        }
+
+        [HttpGet]
+        [Route("Get/{invoiceId}")]
+        public IActionResult GetInvoice(int invoiceId)
+        {
+            Invoice invoice = new Invoice();
+            try
+            {
+                invoice = this.InvoiceRepository.GetInvoice(invoiceId);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { error = "Something went wrong while fetching invoice", exceptionMessage = e.Message });
+            }
+
+            return Ok(new { success = "Invoice fetched successfully", invoice = invoice });
         }
     }
 }

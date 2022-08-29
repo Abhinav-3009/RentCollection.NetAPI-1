@@ -27,7 +27,7 @@ namespace RentCollection.NetAPI.Models
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Amount required")]
-        [Range(int.MaxValue, 1, ErrorMessage = "Amount must be greater than zero")]
+        [Range(1, int.MaxValue, ErrorMessage = "Amount must be greater than zero")]
         public double Amount { get; set; }
 
         public bool IsDeleted { get; set; }
