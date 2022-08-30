@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using RentCollection.NetAPI.Authentication;
 using RentCollection.NetAPI.Models;
 using RentCollection.NetAPI.Security;
+using RentCollection.NetAPI.ServiceImplementation;
+using RentCollection.NetAPI.ServiceInterface;
 using RentCollection.NetAPI.ViewModels;
 
 namespace RentCollection.NetAPI.Controllers
@@ -19,7 +21,9 @@ namespace RentCollection.NetAPI.Controllers
     {
         private readonly IJwtAuthenticationManager JwtAuthenticationManager;
 
-        private readonly RentCollectionContext db = new RentCollectionContext();
+        private IUserRepository UserRepository;
+        private IInvoiceItemCategoryRepository InvoiceItemCategoryRepository;
+        private IDocumentTypeRepository DocumentTypeRepository;
 
         private readonly string[] InvoiceItemCategoryList = { "Wifi", "Mess", "Rent", "Electricity Bill" };
 
@@ -27,7 +31,9 @@ namespace RentCollection.NetAPI.Controllers
 
         public UserController(IJwtAuthenticationManager jwtAuthenticationManager)
         {
-
+            this.UserRepository = new UserRepository(new RentCollectionContext());
+            this.InvoiceItemCategoryRepository = new InvoiceItemCategoryRepository(new RentCollectionContext());
+            this.DocumentTypeRepository = new DocumentTypeRepository(new RentCollectionContext());
             this.JwtAuthenticationManager = jwtAuthenticationManager;
         }
 
@@ -62,8 +68,7 @@ namespace RentCollection.NetAPI.Controllers
                 user.Password = Encryption.Encrypt(user.Password);
 
                 // add user to database
-                this.db.Users.Add(user);
-                this.db.SaveChanges();
+                this.UserRepository.Add(user);
 
                 // add default document types to user account
                 for(int i=0; i<DocumentTypeList.Length; i++)
@@ -71,8 +76,7 @@ namespace RentCollection.NetAPI.Controllers
                     DocumentType dt = new DocumentType();
                     dt.UserId = user.UserId;
                     dt.Code = DocumentTypeList[i];
-                    this.db.DocumentTypes.Add(dt);
-                    this.db.SaveChanges();
+                    this.DocumentTypeRepository.Add(dt);
                 }
 
                 // add default invoice item category to user account
@@ -81,8 +85,7 @@ namespace RentCollection.NetAPI.Controllers
                     InvoiceItemCategory itc = new InvoiceItemCategory();
                     itc.UserId = user.UserId;
                     itc.Code = InvoiceItemCategoryList[i];
-                    this.db.InvoiceItemCategories.Add(itc);
-                    this.db.SaveChanges();
+                    this.InvoiceItemCategoryRepository.Add(itc);
                 }
 
             }

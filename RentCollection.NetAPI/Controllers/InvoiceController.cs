@@ -20,7 +20,6 @@ namespace RentCollection.NetAPI.Controllers
     public class InvoiceController : ControllerBase
     {
         private IInvoiceRepository InvoiceRepository;
-        private readonly RentCollectionContext db = new RentCollectionContext();
 
         private int UserId;
 
@@ -40,8 +39,7 @@ namespace RentCollection.NetAPI.Controllers
 
             try
             {
-                db.Invoices.Add(invoice);
-                db.SaveChanges();
+                this.InvoiceRepository.Create(invoice);
 
             }
             catch (Exception e)
