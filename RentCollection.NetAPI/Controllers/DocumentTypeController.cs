@@ -72,12 +72,15 @@ namespace RentCollection.NetAPI.Controllers
         }
 
         [HttpDelete]
-        [Route("Delete")]
+        [Route("Delete/{documentTypeId}")]
         public IActionResult Delete(int documentTypeId)
         {
             try
             {
-                this.DocumentTypeRepository.Delete(documentTypeId);
+                if (!this.DocumentTypeRepository.Used(documentTypeId))
+                    this.DocumentTypeRepository.Delete(documentTypeId);
+                else return BadRequest(new { error = "Cannot Delete: Documents utilise this document type" });
+                
             }
             catch (Exception e)
             {

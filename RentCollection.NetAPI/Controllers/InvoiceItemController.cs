@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,10 +18,16 @@ namespace RentCollection.NetAPI.Controllers
     public class InvoiceItemController : ControllerBase
     {
         private IInvoiceItemRepository InvoiceItemRepository;
+        private IInvoiceItemCategoryRepository InvoiceItemCategoryRepository;
 
-        public InvoiceItemController()
+        private int UserId;
+
+        public InvoiceItemController(IHttpContextAccessor httpContextAccessor)
         {
             this.InvoiceItemRepository = new InvoiceItemRepository(new RentCollectionContext());
+            this.InvoiceItemCategoryRepository = new InvoiceItemCategoryRepository(new RentCollectionContext());
+
+            this.UserId = Convert.ToInt32(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
         }
 
         [HttpPost]
@@ -33,6 +40,10 @@ namespace RentCollection.NetAPI.Controllers
             try
             {
                 // Check if Invoice is associated with the account
+                int waivedOffCategoryId = this.InvoiceItemCategoryRepository.GetInvoiceItemCategoryIdByCode("Waived Off", this.UserId);
+
+                if (waivedOffCategoryId == invoiceItem.InvoiceItemCategoryId)
+                    invoiceItem.Amount = -invoiceItem.Amount;
                 this.InvoiceItemRepository.Add(invoiceItem);
             }
             catch (Exception e)

@@ -13,6 +13,8 @@ namespace RentCollection.NetAPI.ServiceInterface
         void Delete(int invoiceItemCategoryId);
 
         int GetInvoiceItemCategoryIdByCode(string code, int userId);
+
+        bool Used(int invoiceItemCategoryId);
     }
 }
 

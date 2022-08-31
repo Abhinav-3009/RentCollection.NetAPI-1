@@ -42,7 +42,7 @@ namespace RentCollection.NetAPI.ServiceImplementation
 
         public Invoice GetInvoice(int invoiceId)
         {
-            Invoice invoice = this.context.Invoices.Include("InvoiceItems").Where(i => i.InvoiceId == invoiceId).FirstOrDefault();
+            Invoice invoice = this.context.Invoices.Include("InvoiceItems").Include("Payments").Where(i => i.InvoiceId == invoiceId).FirstOrDefault();
             return invoice;
         }
     }

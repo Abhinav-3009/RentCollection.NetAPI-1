@@ -147,6 +147,7 @@ CREATE TABLE Payments (
     ModeOfPaymentId INT NOT NULL,
     Description VARCHAR(100),
     Amount FLOAT NOT NULL,
+    PRIMARY KEY(PaymentId),
     FOREIGN KEY(InvoiceId) REFERENCES Invoices(InvoiceId) ON DELETE CASCADE,
     FOREIGN KEY(ModeOfPaymentId) REFERENCES ModeOfPayment(ModeOfPaymentId) ON DELETE CASCADE
 );
@@ -176,12 +177,29 @@ ALTER TABLE InvoiceItem ALTER COLUMN Description VARCHAR(200) NOT NULL;
 
 ### Sql Procedures
 
-```
+```sql
 
 CREATE PROCEDURE DeleteInvoiceItemAssociatedWithElectricityBill @MeterReadingId int
 AS
 DELETE FROM InvoiceItem WHERE Description LIKE CONCAT('%MeterReadingId: ', @MeterReadingId)
 GO;
 
+
+```
+
+### Testing sql
+```sql
+
+SELECT * FROM Users;
+SELECT * FROM Rentals;
+SELECT * FROM Tenants;
+SELECT * FROM Allocation;
+SELECT * FROM Invoices;
+SELECT * FROM InvoiceItem;
+SELECT * FROM InvoiceItemCategory;
+SELECT * FROM Documents;
+SELECT * FROM DocumentType;
+SELECT * FROM Payments;
+SELECT * FROM ModeOfPayment;
 
 ```

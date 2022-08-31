@@ -25,7 +25,7 @@ namespace RentCollection.NetAPI.Controllers
         private IInvoiceItemCategoryRepository InvoiceItemCategoryRepository;
         private IDocumentTypeRepository DocumentTypeRepository;
 
-        private readonly string[] InvoiceItemCategoryList = { "Wifi", "Mess", "Rent", "Electricity Bill" };
+        private readonly string[] InvoiceItemCategoryList = { "Wifi", "Mess", "Rent", "Electricity Bill", "Waived Off" };
 
         private readonly string[] DocumentTypeList = { "Aadhaar", "Pancard", "Driving License" };
 

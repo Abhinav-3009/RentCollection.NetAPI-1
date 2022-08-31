@@ -171,8 +171,6 @@ namespace RentCollection.NetAPI.Models
 
             modelBuilder.Entity<Payment>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.Property(e => e.Description)
                     .HasMaxLength(100)
                     .IsUnicode(false);
@@ -180,7 +178,7 @@ namespace RentCollection.NetAPI.Models
                 entity.Property(e => e.PaymentId).ValueGeneratedOnAdd();
 
                 entity.HasOne(d => d.Invoice)
-                    .WithMany()
+                    .WithMany(d => d.Payments)
                     .HasForeignKey(d => d.InvoiceId)
                     .HasConstraintName("FK__Payments__Invoic__60A75C0F");
 

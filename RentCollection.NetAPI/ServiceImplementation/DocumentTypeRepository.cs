@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using RentCollection.NetAPI.Models;
 using RentCollection.NetAPI.ServiceInterface;
 using RentCollection.NetAPI.ViewModels;
@@ -38,6 +39,13 @@ namespace RentCollection.NetAPI.ServiceImplementation
             oldDocumentType.Code = documentTypeUpdate.Code;
             this.Context.DocumentTypes.Update(oldDocumentType);
             this.Context.SaveChanges();
+        }
+
+        public bool Used(int documentTypeId)
+        {
+            Document document = this.Context.Documents.Where(d => d.DocumentTypeId == documentTypeId).FirstOrDefault();
+
+            return document != null ? true : false;
         }
     }
 }

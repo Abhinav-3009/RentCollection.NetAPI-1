@@ -26,5 +26,6 @@ namespace RentCollection.NetAPI.Models
 
         public virtual Allocation Allocation { get; set; }
         public virtual ICollection<InvoiceItem> InvoiceItems { get; set; }
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

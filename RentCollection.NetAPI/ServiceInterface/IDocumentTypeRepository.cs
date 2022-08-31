@@ -11,6 +11,8 @@ namespace RentCollection.NetAPI.ServiceInterface
         void Update(DocumentTypeUpdate documentTypeUpdate);
 
         void Delete(int documentTypeId);
+
+        bool Used(int documentTypeId);
     }
 }
 

@@ -47,6 +47,12 @@ namespace RentCollection.NetAPI.ServiceImplementation
             this.Context.SaveChanges();
         }
 
+        public bool Used(int invoiceItemCategoryId)
+        {
+            InvoiceItem invoiceItem = this.Context.InvoiceItems.Where(it => it.InvoiceItemCategoryId == invoiceItemCategoryId).FirstOrDefault();
+            return invoiceItem != null ? true : false;
+
+        }
     }
 }
 
