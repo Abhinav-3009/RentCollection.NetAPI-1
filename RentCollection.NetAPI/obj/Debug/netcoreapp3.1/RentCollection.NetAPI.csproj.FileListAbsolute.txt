@@ -150,3 +150,9 @@
 /Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/System.Memory.Data.dll
 /Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/System.Text.Encodings.Web.dll
 /Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/System.Text.Json.dll
+/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/System.Data.SqlClient.dll
+/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/runtimes/win-arm64/native/sni.dll
+/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/runtimes/win-x64/native/sni.dll
+/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/runtimes/win-x86/native/sni.dll
+/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll

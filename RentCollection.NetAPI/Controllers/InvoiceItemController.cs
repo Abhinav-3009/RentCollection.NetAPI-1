@@ -32,6 +32,7 @@ namespace RentCollection.NetAPI.Controllers
 
             try
             {
+                // Check if Invoice is associated with the account
                 this.InvoiceItemRepository.Add(invoiceItem);
             }
             catch (Exception e)
@@ -48,7 +49,7 @@ namespace RentCollection.NetAPI.Controllers
         {
             try
             {
-                // Check if Invoice Item is associated with account
+                // Check if Invoice Item is associated with account and Invoice is not deleted
                 this.InvoiceItemRepository.Delete(invoiceItemId);
             }
             catch (Exception e)

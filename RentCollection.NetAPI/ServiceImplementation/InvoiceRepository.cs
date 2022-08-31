@@ -16,9 +16,17 @@ namespace RentCollection.NetAPI.ServiceImplementation
             this.context = context;
         }
 
-        public void Create(Invoice invoice)
+        public Invoice Create(Invoice invoice)
         {
             this.context.Invoices.Add(invoice);
+            this.context.SaveChanges();
+            return invoice;
+        }
+
+        public void Delete(int invoiceId)
+        {
+            Invoice invoice = this.context.Invoices.Find(invoiceId);
+            this.context.Invoices.Remove(invoice);
             this.context.SaveChanges();
         }
 

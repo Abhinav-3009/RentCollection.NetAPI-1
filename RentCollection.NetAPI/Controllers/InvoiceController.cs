@@ -60,6 +60,8 @@ namespace RentCollection.NetAPI.Controllers
                 // Check if Invoice is associated with account
 
                 invoice = this.InvoiceRepository.GetInvoice(invoiceId);
+                if (invoice == null)
+                    return NotFound("Invoice not found");
             }
             catch (Exception e)
             {
@@ -67,6 +69,25 @@ namespace RentCollection.NetAPI.Controllers
             }
 
             return Ok(new { success = "Invoice fetched successfully", invoice = invoice });
+        }
+
+        [HttpDelete]
+        [Route("Delete/{invoiceId}")]
+        public IActionResult Delete(int invoiceId)
+        {
+
+            Invoice invoice = new Invoice();
+            try
+            {
+                // Check if Invoice is associated with the account
+                this.InvoiceRepository.Delete(invoiceId);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { error = "Something went wrong while deleting invoice", exceptionMessage = e.Message });
+            }
+
+            return Ok(new { success = "Invoice deleted successfully"});
         }
     }
 }

@@ -170,4 +170,18 @@ ALTER TABLE ElectricityMeterReading ADD GenerateBill BIT NOT NULL DEFAULT(0);
 
 ALTER TABLE ElectricityMeterReading ADD Charges INT NOT NULL;
 
+ALTER TABLE InvoiceItem ALTER COLUMN Description VARCHAR(200) NOT NULL;
+
+```
+
+### Sql Procedures
+
+```
+
+CREATE PROCEDURE DeleteInvoiceItemAssociatedWithElectricityBill @MeterReadingId int
+AS
+DELETE FROM InvoiceItem WHERE Description LIKE CONCAT('%MeterReadingId: ', @MeterReadingId)
+GO;
+
+
 ```

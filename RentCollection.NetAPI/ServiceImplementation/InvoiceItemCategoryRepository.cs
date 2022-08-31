@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using RentCollection.NetAPI.Models;
 using RentCollection.NetAPI.ServiceInterface;
 using RentCollection.NetAPI.ViewModels;
@@ -29,6 +30,12 @@ namespace RentCollection.NetAPI.ServiceImplementation
         public void Dispose()
         {
             throw new NotImplementedException();
+        }
+
+        public int GetInvoiceItemCategoryIdByCode(string code, int userId)
+        {
+            InvoiceItemCategory invoiceItemCategory = this.Context.InvoiceItemCategories.Where(i => i.UserId == userId && i.Code == code).FirstOrDefault();
+            return invoiceItemCategory.InvoiceItemCategoryId;
         }
 
         public void Update(InvoiceItemCategoryUpdate invoiceItemCategoryUpdate)

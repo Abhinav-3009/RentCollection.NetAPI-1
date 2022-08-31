@@ -6,11 +6,13 @@ namespace RentCollection.NetAPI.ServiceInterface
 {
     public interface IInvoiceRepository : IDisposable
     {
-        void Create(Invoice invoice);
+        Invoice Create(Invoice invoice);
 
         Invoice GetInvoice(int invoiceId);
 
         List<Invoice> GetAllInvoices(int allocationId);
+
+        void Delete(int invoiceId);
     }
 }
 

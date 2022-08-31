@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using RentCollection.NetAPI.Models;
 using RentCollection.NetAPI.RecordAccessibility;
+using RentCollection.NetAPI.ServiceImplementation;
+using RentCollection.NetAPI.ServiceInterface;
 using RentCollection.NetAPI.ViewModels;
 
 namespace RentCollection.NetAPI.Controllers
@@ -19,14 +21,16 @@ namespace RentCollection.NetAPI.Controllers
     [Authorize]
     public class AllocationController : ControllerBase
     {
-        private readonly RentCollectionContext db = new RentCollectionContext();
+        private IAllocationRepository AllocationRepository;
 
         private int UserId;
 
         public AllocationController(IHttpContextAccessor httpContextAccessor)
         {
+            this.AllocationRepository = new AllocationRepository(new RentCollectionContext());
             this.UserId = Convert.ToInt32(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
         }
+
 
         [HttpPost]
         [Route("Allocate")]
@@ -43,8 +47,7 @@ namespace RentCollection.NetAPI.Controllers
                     return BadRequest(new { error = "Tenant or Rental is already allocated" });
 
                 allocation.IsActive = true;
-                db.Allocations.Add(allocation);
-                db.SaveChanges();
+                this.AllocationRepository.Allocate(allocation);
             }
             catch (Exception e)
             {
@@ -56,28 +59,19 @@ namespace RentCollection.NetAPI.Controllers
         }
 
         [HttpPut]
-        [Route("Deallocate")]
-        public IActionResult allocationStateUpdate(AllocationStateUpdate allocationStateUpdate)
+        [Route("Deallocate/{allocationId}")]
+        public IActionResult allocationStateUpdate(int allocationId)
         {
-
-            if (!ModelState.IsValid)
-                return BadRequest(new { error = "Model is invalid" });
-
             try
             {
+                // Check if allocation is associated with the account
 
-                var allocations = db.Allocations.ToList();
-                Allocation allocation = (from a in allocations where a.RentalId == allocationStateUpdate.RentalId && a.TenantId == allocationStateUpdate.TenantId select a).FirstOrDefault();
+                // Check for any outstanding invoice.
 
-                if (allocation == null)
-                    return NotFound(new { error = "Allocation not found" });
+                // Deallocate the rental and tenant once all invoices have been settled.
 
-                //Check for any outstanding invoice.
+                this.AllocationRepository.Deallocate(allocationId);
 
-                //Deallocate the rental and tenant once all invoices have been settled.
-
-               allocation.IsActive = false;
-                db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -85,28 +79,17 @@ namespace RentCollection.NetAPI.Controllers
                 return BadRequest(new { error = "Something went wrong while deallocation process", exceptionMessage = e.Message });
             }
 
-            return Ok(new { success = "Deallocation done successfully", allocation = allocationStateUpdate });
+            return Ok(new { success = "Deallocation done successfully" });
         }
 
         [HttpPut]
-        [Route("Reallocate")]
-        public IActionResult Reallocate(AllocationStateUpdate allocationStateUpdate)
+        [Route("Reallocate/{allocationId}")]
+        public IActionResult Reallocate(int allocationId)
         {
-
-            if (!ModelState.IsValid)
-                return BadRequest(new { error = "Model is invalid" });
-
             try
             {
-
-                var allocations = db.Allocations.ToList();
-                Allocation allocation = (from a in allocations where a.RentalId == allocationStateUpdate.RentalId && a.TenantId == allocationStateUpdate.TenantId select a).FirstOrDefault();
-
-                if (allocation == null)
-                    return NotFound(new { error = "Allocation not found" });
-
-                allocation.IsActive = true;
-                db.SaveChanges();
+                // Check if Tenant or Rental of this allocation is not occupied in other allocation whichi is active
+                this.AllocationRepository.Reallocate(allocationId);
             }
             catch (Exception e)
             {
@@ -114,7 +97,7 @@ namespace RentCollection.NetAPI.Controllers
                 return BadRequest(new { error = "Something went wrong while reallocation process", exceptionMessage = e.Message });
             }
 
-            return Ok(new { success = "Reallocation done successfully", allocation = allocationStateUpdate });
+            return Ok(new { success = "Reallocation done successfully" });
         }
 
         [HttpDelete]
@@ -123,7 +106,7 @@ namespace RentCollection.NetAPI.Controllers
         {
             try
             {
-                Allocation allocation = db.Allocations.Find(allocationId);
+                Allocation allocation = this.AllocationRepository.Find(allocationId);
                 if (allocation == null)
                     return NotFound(new { error = "Allocation not found" });
 
@@ -136,8 +119,7 @@ namespace RentCollection.NetAPI.Controllers
                 if (allocation.IsActive)
                     return Unauthorized("Active allocation cannot be deleted, First deallocate the allocation and then delete the allocation");
 
-                allocation.IsDeleted = true;
-                db.SaveChanges();
+                this.AllocationRepository.Delete(allocationId);
 
             }
             catch (Exception e)

@@ -11,6 +11,8 @@ namespace RentCollection.NetAPI.ServiceInterface
         void Update(InvoiceItemCategoryUpdate invoiceItemCategoryUpdate);
 
         void Delete(int invoiceItemCategoryId);
+
+        int GetInvoiceItemCategoryIdByCode(string code, int userId);
     }
 }
 
