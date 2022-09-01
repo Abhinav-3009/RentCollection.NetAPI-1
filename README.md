@@ -173,6 +173,9 @@ ALTER TABLE ElectricityMeterReading ADD Charges INT NOT NULL;
 
 ALTER TABLE InvoiceItem ALTER COLUMN Description VARCHAR(200) NOT NULL;
 
+ALTER TABLE AutomatedRaisedPayments ADD CONSTRAINT Unique_Automated_Raised_Item UNIQUE(AllocationId, InvoiceItemCategoryId);
+
+
 ```
 
 ### Sql Procedures

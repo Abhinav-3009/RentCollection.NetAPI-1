@@ -15,6 +15,12 @@ namespace RentCollection.NetAPI.ServiceImplementation
 
         public void Add(InvoiceItem invoiceItem)
         {
+            // Fetch Invoice item category
+            InvoiceItemCategory invoiceItemCategory = this.context.InvoiceItemCategories.Find(invoiceItem.InvoiceItemCategoryId);
+
+            // Save Waived Off category amount negative
+            if (invoiceItemCategory.Code == "Waived Off")
+                invoiceItem.Amount = -invoiceItem.Amount;
             this.context.InvoiceItems.Add(invoiceItem);
             this.context.SaveChanges();
         }

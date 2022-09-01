@@ -9,6 +9,7 @@ namespace RentCollection.NetAPI.ServiceInterface
         void Delete(int rentalId);
         Rental Get(int rentalId);
         void Update(Rental rental);
+
     }
 }
 

@@ -13,6 +13,7 @@ namespace RentCollection.NetAPI.ServiceInterface
         Allocation Find(int allocationId);
         Allocation GetAllocationByRentalId(int rentalId);
         Allocation GetAllocationByTenantId(int tenantId);
+
     }
 }
 

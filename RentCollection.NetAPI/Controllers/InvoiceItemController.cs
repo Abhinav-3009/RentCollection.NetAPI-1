@@ -42,8 +42,6 @@ namespace RentCollection.NetAPI.Controllers
                 // Check if Invoice is associated with the account
                 int waivedOffCategoryId = this.InvoiceItemCategoryRepository.GetInvoiceItemCategoryIdByCode("Waived Off", this.UserId);
 
-                if (waivedOffCategoryId == invoiceItem.InvoiceItemCategoryId)
-                    invoiceItem.Amount = -invoiceItem.Amount;
                 this.InvoiceItemRepository.Add(invoiceItem);
             }
             catch (Exception e)

@@ -22,12 +22,17 @@ namespace RentCollection.NetAPI.Controllers
     public class AllocationController : ControllerBase
     {
         private IAllocationRepository AllocationRepository;
-
+        private IAutomatedRaisedPaymentRepository AutomatedRaisedPaymentRepository;
+        private IInvoiceItemCategoryRepository InvoiceItemCategoryRepository;
+        private IRentalRepository RentalRepository;
         private int UserId;
 
         public AllocationController(IHttpContextAccessor httpContextAccessor)
         {
             this.AllocationRepository = new AllocationRepository(new RentCollectionContext());
+            this.AutomatedRaisedPaymentRepository = new AutomatedRaisedPaymentRepository(new RentCollectionContext());
+            this.InvoiceItemCategoryRepository = new InvoiceItemCategoryRepository(new RentCollectionContext());
+            this.RentalRepository = new RentalRepository(new RentCollectionContext());
             this.UserId = Convert.ToInt32(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
         }
 
@@ -48,6 +53,21 @@ namespace RentCollection.NetAPI.Controllers
 
                 allocation.IsActive = true;
                 this.AllocationRepository.Allocate(allocation);
+
+                // Add automated rent payment
+
+                AutomatedRaisedPayment automatedRaisedPayment = new AutomatedRaisedPayment();
+
+                int invoiceItemCategoryId = this.InvoiceItemCategoryRepository.GetInvoiceItemCategoryIdByCode("Rent", this.UserId);
+
+                automatedRaisedPayment.InvoiceItemCategoryId = invoiceItemCategoryId;
+                automatedRaisedPayment.AllocationId = allocation.AllocationId;
+                automatedRaisedPayment.Description = "For 1 month";
+
+                Rental rental = this.RentalRepository.Get(allocation.RentalId);
+                automatedRaisedPayment.Amount = rental.Amount;
+
+                this.AutomatedRaisedPaymentRepository.Add(automatedRaisedPayment);
             }
             catch (Exception e)
             {
