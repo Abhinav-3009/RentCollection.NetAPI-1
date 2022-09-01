@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using RentCollection.NetAPI.Models;
 using RentCollection.NetAPI.ServiceInterface;
 
@@ -35,6 +37,12 @@ namespace RentCollection.NetAPI.ServiceImplementation
         {
             Rental rental = this.context.Rentals.Find(rentalId);
             return rental;
+        }
+
+        public List<Rental> GetAll(int userId)
+        {
+            List<Rental> rentals = this.context.Rentals.Where(r => r.UserId == userId).ToList();
+            return rentals;
         }
 
         public void Update(Rental rental)

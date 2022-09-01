@@ -119,5 +119,23 @@ namespace RentCollection.NetAPI.Controllers
             }
             return Ok(new { success = "Rental fetched successfully", rental = rental });
         }
+
+
+        [HttpGet]
+        [Route("Get")]
+        public IActionResult GetAll()
+        {
+            List<Rental> rentals = new List<Rental>();
+            try
+            {
+                rentals = this.RentalRepository.GetAll(this.UserId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                return BadRequest(new { error = "Something went wrong while fetching rentals", exceptionMessage = e.Message });
+            }
+            return Ok(new { success = "Rentals fetched successfully", rentals = rentals });
+        }
     }
 }

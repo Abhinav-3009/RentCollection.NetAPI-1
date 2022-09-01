@@ -30,6 +30,7 @@ namespace RentCollection.NetAPI.Models
         public bool IsDeleted { get; set; }
 
         public virtual Rental Rental { get; set; }
+        public virtual Tenant Tenant { get; set; }
         public virtual ICollection<AutomatedRaisedPayment> AutomatedRaisedPayments { get; set; }
         public virtual ICollection<Invoice> Invoices { get; set; }
     }

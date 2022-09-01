@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Microsoft.Data.SqlClient;
@@ -54,7 +55,12 @@ namespace RentCollection.NetAPI.ServiceImplementation
             return electricityMeterReading;
         }
 
-        
+        public List<ElectricityMeterReading> GetAllReadings(int rentalId)
+        {
+            List<ElectricityMeterReading> readings = this.Context.ElectricityMeterReadings.Where(emr => emr.RentalId == rentalId && emr.IsDeleted == false).ToList();
+
+            return readings;
+        }
     }
 }
 

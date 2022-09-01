@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RentCollection.NetAPI.Models;
 
 namespace RentCollection.NetAPI.ServiceInterface
@@ -9,6 +10,7 @@ namespace RentCollection.NetAPI.ServiceInterface
         void Delete(int tenantId);
         Tenant Get(int tenantId);
         void Update(Tenant tenant);
+        List<Tenant> GetAll(int userId);
     }
 }
 

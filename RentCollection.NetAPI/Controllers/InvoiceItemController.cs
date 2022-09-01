@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentCollection.NetAPI.Models;
+using RentCollection.NetAPI.RecordAccessibility;
 using RentCollection.NetAPI.ServiceImplementation;
 using RentCollection.NetAPI.ServiceInterface;
 
@@ -19,14 +20,16 @@ namespace RentCollection.NetAPI.Controllers
     {
         private IInvoiceItemRepository InvoiceItemRepository;
         private IInvoiceItemCategoryRepository InvoiceItemCategoryRepository;
-
+        private IInvoiceRepository InvoiceRepository;
+        private IAllocationRepository AllocationRepository;
         private int UserId;
 
         public InvoiceItemController(IHttpContextAccessor httpContextAccessor)
         {
             this.InvoiceItemRepository = new InvoiceItemRepository(new RentCollectionContext());
             this.InvoiceItemCategoryRepository = new InvoiceItemCategoryRepository(new RentCollectionContext());
-
+            this.InvoiceRepository = new InvoiceRepository(new RentCollectionContext());
+            this.AllocationRepository = new AllocationRepository(new RentCollectionContext());
             this.UserId = Convert.ToInt32(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
         }
 
@@ -40,7 +43,6 @@ namespace RentCollection.NetAPI.Controllers
             try
             {
                 // Check if Invoice is associated with the account
-                int waivedOffCategoryId = this.InvoiceItemCategoryRepository.GetInvoiceItemCategoryIdByCode("Waived Off", this.UserId);
 
                 this.InvoiceItemRepository.Add(invoiceItem);
             }
@@ -59,6 +61,17 @@ namespace RentCollection.NetAPI.Controllers
             try
             {
                 // Check if Invoice Item is associated with account and Invoice is not deleted
+                InvoiceItem invoiceItem = this.InvoiceItemRepository.Get(invoiceItemId);
+                int invoiceId = invoiceItem.InvoiceId;
+                Invoice invoice = this.InvoiceRepository.GetInvoice(invoiceId);
+
+                Allocation allocation = this.AllocationRepository.Find(invoice.AllocationId);
+                if (!RentalAccess.Check(allocation.RentalId, this.UserId) || !TenantAccess.Check(allocation.TenantId, this.UserId))
+                    return Unauthorized("Rental or Tenant is not associated with your account");
+                if (!allocation.IsActive)
+                    return BadRequest(new { error = "Cannot perform delete action on inactive allocation" });
+                if (invoice.IsDeleted)
+                    return BadRequest(new { error = "Cannot delete items in deleted invoice" });
                 this.InvoiceItemRepository.Delete(invoiceItemId);
             }
             catch (Exception e)

@@ -145,5 +145,49 @@ namespace RentCollection.NetAPI.Controllers
 
             return Ok(new { success = "Electricity meter reading deleted successfully" });
         }
+
+        [HttpGet]
+        [Route("Get/{electricityMeterReadingId}")]
+        public IActionResult Get(int electricityMeterReadingId)
+        {
+            ElectricityMeterReading electricityMeterReading = new ElectricityMeterReading();
+            try
+            {
+                electricityMeterReading = this.ElectricityMeterReadingRepository.Get(electricityMeterReadingId);
+
+                if (!RentalAccess.Check(electricityMeterReading.RentalId, this.UserId))
+                    return BadRequest(new { error = "Rental not associated with your account" });
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                return BadRequest(new { error = "Something went wrong while fetching electricity meter reading", exceptionMessage = e.Message });
+            }
+
+            return Ok(new { success = "Electricity meter reading fetched successfully", electricityMeterReading = electricityMeterReading });
+        }
+
+        [HttpGet]
+        [Route("Get/All/{rentalId}")]
+        public IActionResult GetAllReadings(int rentalId)
+        {
+            List<ElectricityMeterReading> readings = new List<ElectricityMeterReading>();
+            try
+            {
+                if (!RentalAccess.Check(rentalId, this.UserId))
+                    return BadRequest(new { error = "Rental not associated with your account" });
+
+                readings = this.ElectricityMeterReadingRepository.GetAllReadings(rentalId);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                return BadRequest(new { error = "Something went wrong while fetching electricity meter readings", exceptionMessage = e.Message });
+            }
+
+            return Ok(new { success = "Electricity meter readings fetched successfully", readings = readings });
+        }
     }
 }

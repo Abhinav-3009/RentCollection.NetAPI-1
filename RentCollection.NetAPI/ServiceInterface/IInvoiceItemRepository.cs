@@ -7,6 +7,7 @@ namespace RentCollection.NetAPI.ServiceInterface
     {
         void Add(InvoiceItem invoiceItem);
         void Delete(int invoiceItemId);
+        public InvoiceItem Get(int invoiceItemId);
     }
 }
 

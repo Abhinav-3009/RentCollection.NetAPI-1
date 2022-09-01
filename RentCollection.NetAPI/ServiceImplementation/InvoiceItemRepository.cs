@@ -32,6 +32,12 @@ namespace RentCollection.NetAPI.ServiceImplementation
             this.context.SaveChanges();
         }
 
+        public InvoiceItem Get(int invoiceItemId)
+        {
+            InvoiceItem invoiceItem = this.context.InvoiceItems.Find(invoiceItemId);
+            return invoiceItem;
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();

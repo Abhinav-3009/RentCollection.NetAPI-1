@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RentCollection.NetAPI.Models;
 
 namespace RentCollection.NetAPI.ServiceInterface
@@ -11,6 +12,8 @@ namespace RentCollection.NetAPI.ServiceInterface
         ElectricityMeterReading FetchLatestReading(int rentalId);
 
         ElectricityMeterReading Get(int electricityMeterReadingId);
+
+        List<ElectricityMeterReading> GetAllReadings(int rentalId);
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using RentCollection.NetAPI.Models;
 using RentCollection.NetAPI.ServiceInterface;
 using RentCollection.NetAPI.ViewModels;
@@ -45,6 +46,12 @@ namespace RentCollection.NetAPI.ServiceImplementation
         public Allocation Find(int allocationId)
         {
             Allocation allocation = this.Context.Allocations.Find(allocationId);
+            return allocation;
+        }
+
+        public Allocation Get(int allocationId)
+        {
+            Allocation allocation =  this.Context.Allocations.Include("Rental").Include("Tenant").Where(a => a.AllocationId == allocationId).FirstOrDefault();
             return allocation;
         }
 

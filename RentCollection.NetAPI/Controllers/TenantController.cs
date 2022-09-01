@@ -122,5 +122,23 @@ namespace RentCollection.NetAPI.Controllers
             }
             return Ok(new { success = "Tenant fetched successfully", tenant = tenant });
         }
+
+
+        [HttpGet]
+        [Route("Get")]
+        public IActionResult GetAll()
+        {
+            List<Tenant> tenants = new List<Tenant>();
+            try
+            {
+                tenants = this.TenantRepository.GetAll(this.UserId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                return BadRequest(new { error = "Something went wrong while fetching tenants", exceptionMessage = e.Message });
+            }
+            return Ok(new { success = "Tenants fetched successfully", tenants = tenants });
+        }
     }
 }

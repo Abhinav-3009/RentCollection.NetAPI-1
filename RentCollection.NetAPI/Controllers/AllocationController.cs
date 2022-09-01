@@ -150,5 +150,35 @@ namespace RentCollection.NetAPI.Controllers
             return Ok(new { success = "Allocation deleted successfully"});
 
         }
+
+        [HttpGet]
+        [Route("Get/{allocationId}")]
+        public IActionResult Get(int allocationId)
+        {
+            Allocation allocationDetails = new Allocation();
+            try
+            {
+                Allocation allocation = this.AllocationRepository.Find(allocationId);
+                if (allocation == null)
+                    return NotFound(new { error = "Allocation not found" });
+
+                int rentalId = allocation.RentalId;
+                int tenantId = allocation.TenantId;
+
+                if (!RentalAccess.Check(rentalId, this.UserId) || !TenantAccess.Check(tenantId, this.UserId))
+                    return Unauthorized("Allocation is not associated with your account");
+
+
+                allocationDetails = this.AllocationRepository.Get(allocationId);
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { error = "Something went wrong while fetching allocation", exceptionMessage = e.Message });
+            }
+
+            return Ok(new { success = "Allocation fetched successfully", allocation = allocationDetails });
+
+        }
     }
 }
