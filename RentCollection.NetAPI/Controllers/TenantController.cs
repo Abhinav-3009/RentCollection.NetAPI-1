@@ -42,6 +42,7 @@ namespace RentCollection.NetAPI.Controllers
                 tenant.UserId = this.UserId;
                 tenant.Password = Encryption.Encrypt(tenant.Password);
                 this.TenantRepository.Add(tenant);
+                tenant.Password = "Password is secured with encryption";
             }
             catch (Exception e)
             {
@@ -67,6 +68,7 @@ namespace RentCollection.NetAPI.Controllers
                 tenant.UserId = this.UserId;
                 tenant.Password = Encryption.Encrypt(tenant.Password);
                 this.TenantRepository.Add(tenant);
+                tenant.Password = "Password is secured with encryption";
             }
             catch (Exception e)
             {

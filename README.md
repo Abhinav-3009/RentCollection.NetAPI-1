@@ -206,3 +206,93 @@ SELECT * FROM Payments;
 SELECT * FROM ModeOfPayment;
 
 ```
+
+### Query Data
+```sql
+
+-- Breif Invoice Info
+SELECT 
+    i.InvoiceId AS InvoiceId, 
+    SUM(Amount) as InvoiceTotal,
+    i.InvoiceDate AS InvoiceDate,
+    (
+        SELECT
+            p.Amount AS PaymentAmount
+        FROM Payments p
+        WHERE p.InvoiceId = i.InvoiceId
+    ) AS PaymentAmount
+FROM InvoiceItem it INNER JOIN
+Invoices i ON it.InvoiceId = i.InvoiceId
+WHERE i.InvoiceId IN (
+    SELECT
+        InvoiceId
+    FROM Invoices
+    WHERE AllocationId = 23
+)
+GROUP BY i.InvoiceId, i.InvoiceDate;
+
+-- ARP By Allocation
+SELECT 
+    AutomatedRaisedPaymentId, 
+    arp.AllocationId AS AllocationId, 
+    arp.Amount AS Amount, 
+    Code AS Category, 
+    arp.Description AS [Description]
+FROM AutomatedRaisedPayments arp 
+INNER JOIN 
+InvoiceItemCategory itc ON arp.InvoiceItemCategoryId = itc.InvoiceItemCategoryId
+INNER JOIN Allocation a
+ON arp.AllocationId = a.AllocationId
+INNER JOIN 
+Rentals r ON r.RentalId = a.RentalId
+WHERE a.IsActive = 1 AND r.UserId = 2008 AND arp.AllocationId = 23;
+
+-- ARP By All Allocation
+SELECT 
+    arp.AllocationId AS AllocationId, 
+    SUM(arp.Amount) AS Amount,
+    r.Title As Title
+FROM AutomatedRaisedPayments arp 
+INNER JOIN 
+InvoiceItemCategory itc ON arp.InvoiceItemCategoryId = itc.InvoiceItemCategoryId
+INNER JOIN Allocation a
+ON arp.AllocationId = a.AllocationId
+INNER JOIN 
+Rentals r ON r.RentalId = a.RentalId
+WHERE a.IsActive = 1 AND r.UserId = 2008
+GROUP BY arp.AllocationId, r.Title;
+
+-- ARP Total Collection
+SELECT 
+    SUM(arp.Amount) AS TotalArpCollection
+FROM AutomatedRaisedPayments arp
+WHERE AllocationId IN (
+    SELECT 
+        AllocationId 
+    FROM Allocation a INNER JOIN 
+    Rentals r ON a.RentalId = r.RentalId 
+    WHERE a.IsActive = 1 AND r.UserId = 2008
+);
+
+-- Current Rent Collection
+SELECT 
+    SUM(Amount) AS CurrentRentCollection 
+FROM Rentals 
+WHERE UserId = 2008 AND IsDeleted = 0;
+
+-- ARP By Category
+SELECT
+    itc.Code AS Category,
+    SUM(arp.Amount) AS Amount
+FROM AutomatedRaisedPayments arp INNER JOIN
+InvoiceItemCategory itc ON arp.InvoiceItemCategoryId = itc.InvoiceItemCategoryId
+WHERE AllocationId IN (
+    SELECT 
+        AllocationId
+    FROM Allocation a INNER JOIN 
+    Rentals r On a.RentalId = r.RentalId
+    WHERE a.IsActive = 1 AND r.UserId = 2008
+)
+GROUP BY itc.Code;
+
+```
