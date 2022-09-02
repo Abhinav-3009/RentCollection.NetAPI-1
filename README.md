@@ -147,6 +147,7 @@ CREATE TABLE Payments (
     ModeOfPaymentId INT NOT NULL,
     Description VARCHAR(100),
     Amount FLOAT NOT NULL,
+    Date DATE NOT NULL,
     PRIMARY KEY(PaymentId),
     FOREIGN KEY(InvoiceId) REFERENCES Invoices(InvoiceId) ON DELETE CASCADE,
     FOREIGN KEY(ModeOfPaymentId) REFERENCES ModeOfPayment(ModeOfPaymentId) ON DELETE CASCADE
@@ -294,5 +295,114 @@ WHERE AllocationId IN (
     WHERE a.IsActive = 1 AND r.UserId = 2008
 )
 GROUP BY itc.Code;
+
+-- Monthly collection by category
+SELECT
+    itc_main.Code AS Category,
+    'May-2022' AS MonthYear,
+    (
+        CASE
+            WHEN CollectionByMonth.Amount IS NULL THEN 0
+            ELSE CollectionByMonth.Amount
+        END
+    )
+    AS Amount
+FROM InvoiceItemCategory itc_main
+LEFT JOIN
+(
+SELECT
+    itc.Code AS Category,
+    SUM(itm.Amount) AS Amount,
+    CONCAT(DATENAME(M, itm.Date), '-' ,DATEPART(YEAR, itm.[Date])) AS MonthYear
+FROM InvoiceItem itm INNER JOIN 
+InvoiceItemCategory itc ON itm.InvoiceItemCategoryId = itc.InvoiceItemCategoryId 
+WHERE InvoiceId IN (
+    SELECT 
+        InvoiceId 
+    FROM Invoices i 
+    WHERE AllocationId IN (
+        SELECT 
+            AllocationId
+        FROM Allocation a INNER JOIN
+        Rentals r ON r.RentalId = a.RentalId
+        WHERE a.IsActive = 1 AND r.UserId = 2008
+    )
+)
+AND itc.Code IN (
+    SELECT
+        Code
+    FROM InvoiceItemCategory
+    WHERE UserId = 2008
+)
+AND CONCAT(DATENAME(M, itm.Date), '-' ,DATEPART(YEAR, itm.[Date])) = 'May-2022'
+GROUP BY itc.Code, CONCAT(DATENAME(M, itm.Date), '-' ,DATEPART(YEAR, itm.[Date])), CONCAT(DATEPART(MONTH, itm.Date), '-', DATEPART(YEAR, itm.Date))
+-- ORDER BY CONCAT(DATEPART(MONTH, itm.Date), '-', DATEPART(YEAR, itm.Date))
+) AS CollectionByMonth ON CollectionByMonth.Category = itc_main.Code;
+
+-- Collection by payment mode
+SELECT
+    mof_main.Code,
+    (
+        CASE
+            WHEN PaymentByMode.Amount IS NULL THEN 0
+            ELSE PaymentByMode.Amount
+        END
+    ) AS PaymentMode
+FROM ModeOfPayment mof_main LEFT JOIN
+(
+SELECT
+    mof.Code AS PaymentMode,
+    -SUM(p.Amount) AS Amount
+FROM Payments p INNER JOIN
+ModeOfPayment mof ON p.ModeOfPaymentId = mof.ModeOfPaymentId
+WHERE p.InvoiceId IN (
+    SELECT 
+        InvoiceId 
+    FROM Invoices i 
+    WHERE AllocationId IN (
+        SELECT 
+            AllocationId
+        FROM Allocation a INNER JOIN
+        Rentals r ON r.RentalId = a.RentalId
+        WHERE a.IsActive = 1 AND r.UserId = 2008
+    )
+)
+GROUP BY mof.Code
+) AS PaymentByMode ON PaymentByMode.PaymentMode = mof_main.Code;
+
+
+-- Collection by payment mode
+SELECT
+    mof_main.Code,
+    (
+        CASE
+            WHEN PaymentByMode.Amount IS NULL THEN 0
+            ELSE PaymentByMode.Amount
+        END
+    ) AS PaymentMode,
+    'June-2022' AS MonthYear
+FROM ModeOfPayment mof_main LEFT JOIN
+(
+SELECT
+    mof.Code AS PaymentMode,
+    -SUM(p.Amount) AS Amount,
+    CONCAT(DATENAME(M, p.Date), '-' ,DATEPART(YEAR, p.Date)) AS MonthYear
+FROM Payments p INNER JOIN
+ModeOfPayment mof ON p.ModeOfPaymentId = mof.ModeOfPaymentId
+WHERE p.InvoiceId IN (
+    SELECT 
+        InvoiceId 
+    FROM Invoices i 
+    WHERE AllocationId IN (
+        SELECT 
+            AllocationId
+        FROM Allocation a INNER JOIN
+        Rentals r ON r.RentalId = a.RentalId
+        WHERE a.IsActive = 1 AND r.UserId = 2008
+    )
+)
+AND CONCAT(DATENAME(M, p.Date), '-' ,DATEPART(YEAR, p.Date)) = 'June-2022'
+GROUP BY mof.Code, CONCAT(DATENAME(M, p.Date), '-' ,DATEPART(YEAR, p.Date))
+) AS PaymentByMode ON PaymentByMode.PaymentMode = mof_main.Code;
 
 ```

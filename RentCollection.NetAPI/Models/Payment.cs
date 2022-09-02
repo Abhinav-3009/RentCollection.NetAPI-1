@@ -18,6 +18,9 @@ namespace RentCollection.NetAPI.Models
 
         public string Description { get; set; }
 
+        [Required(ErrorMessage = "Date required")]
+        public DateTime Date { get; set; }
+
         [Required(ErrorMessage = "Amount required")]
         [Range(1, int.MaxValue, ErrorMessage = "Amount must be greater than zero")]
         public double Amount { get; set; }
