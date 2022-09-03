@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using RentCollection.NetAPI.ViewModels;
 
 #nullable disable
 
@@ -30,6 +31,7 @@ namespace RentCollection.NetAPI.Models
         public virtual DbSet<Rental> Rentals { get; set; }
         public virtual DbSet<Tenant> Tenants { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<MonthYearList> MonthYearLists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

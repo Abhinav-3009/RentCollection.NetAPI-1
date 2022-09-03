@@ -152,6 +152,13 @@ CREATE TABLE Payments (
     FOREIGN KEY(InvoiceId) REFERENCES Invoices(InvoiceId) ON DELETE CASCADE,
     FOREIGN KEY(ModeOfPaymentId) REFERENCES ModeOfPayment(ModeOfPaymentId) ON DELETE CASCADE
 );
+
+
+CREATE TABLE MonthYearList (
+    SerialNo INT NOT NULL IDENTITY(1, 1),
+    MonthYear VARCHAR(20),
+    PRIMARY KEY(SerialNo)
+);
 ```
 
 ### Changes In Database
@@ -406,3 +413,68 @@ GROUP BY mof.Code, CONCAT(DATENAME(M, p.Date), '-' ,DATEPART(YEAR, p.Date))
 ) AS PaymentByMode ON PaymentByMode.PaymentMode = mof_main.Code;
 
 ```
+
+### Generate Month Year List Procedure
+```sql
+-- Generate Month Year List from UserDefined date to current date
+-- Date format: yyyy-mm-01
+
+CREATE PROCEDURE GenerateMonthYearList @date DATE
+AS
+BEGIN
+
+    TRUNCATE TABLE MonthYearList;
+
+    DECLARE @i INT = 0;
+    DECLARE @tempDate DATE = @date;
+
+    DECLARE @months INT = DATEDIFF(MONTH, @tempDate, GETDATE());
+    Print @months;
+    WHILE @i <= @months
+        BEGIN
+            INSERT INTO MonthYearList VALUES (CONCAT(DATENAME(M, @tempDate), '-', DATEPART(YEAR, @tempDate)));
+            SET @tempDate = DATEADD(MONTH, 1, @tempDate);
+            SET @i = @i + 1;
+        END;
+
+END;
+
+-- EXEC GenerateMonthYearList '2022-04-01';
+```
+
+### Raised Payment By Month
+```sql
+SELECT
+    (
+        CASE 
+            WHEN RaisedPaymentByMonth.Amount IS NULL THEN 0
+            ELSE RaisedPaymentByMonth.Amount
+        END
+    ) AS Amount,
+    myl.MonthYear AS MonthYear
+FROM MonthYearList myl LEFT JOIN
+(
+    SELECT
+        SUM(it.Amount) AS Amount,
+        CONCAT(DATENAME(M, it.Date), '-' ,DATEPART(YEAR, it.Date)) AS Date
+    FROM InvoiceItem it
+    WHERE it.InvoiceId IN
+    (
+        SELECT 
+            InvoiceId
+        FROM Invoices i
+        WHERE i.AllocationId IN
+        (
+            SELECT
+                AllocationId
+            FROM Allocation a INNER JOIN
+            Rentals r ON a.RentalId = r.RentalId
+            WHERE r.UserId = @UserId
+        )
+        AND i.IsDeleted = 0
+    )
+    GROUP BY CONCAT(DATENAME(M, it.Date), '-' ,DATEPART(YEAR, it.Date))
+) AS RaisedPaymentByMonth ON myl.MonthYear = RaisedPaymentByMonth.Date
+ORDER BY myl.SerialNo ASC;
+```
+

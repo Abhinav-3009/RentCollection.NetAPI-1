@@ -1,7 +1,4 @@
 ﻿<Properties StartupConfiguration="{9E27D775-46AF-4E6D-B5E3-FB829E70E304}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.RentCollection.NetAPI PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/Controllers/AllocationController.cs" relfile="RentCollection.NetAPI/Controllers/AllocationController.cs" line="108" column="1" />
@@ -11,7 +8,15 @@
       <Breakpoint file="/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/Models/Document.cs" relfile="RentCollection.NetAPI/Models/Document.cs" line="11" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="RentCollection.NetAPI/ServiceImplementation/ElectricityMeterReadingRepository.cs">
+    <Files>
+      <File FileName="RentCollection.NetAPI/Controllers/InvoiceController.cs" Line="88" Column="26" />
+      <File FileName="RentCollection.NetAPI/ServiceImplementation/ElectricityMeterReadingRepository.cs" Line="34" Column="21" />
+      <File FileName="RentCollection.NetAPI/ViewModels/MonthYearList.cs" Line="11" Column="1" />
+      <File FileName="RentCollection.NetAPI/Models/RentCollectionContext.cs" Line="24" Column="37" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
@@ -21,13 +26,13 @@
               <Node name="Controllers" expanded="True" />
               <Node name="Models" expanded="True" />
               <Node name="RecordAccessibility" expanded="True" />
-              <Node name="ServiceImplementation" expanded="True" />
+              <Node name="ServiceImplementation" expanded="True">
+                <Node name="ElectricityMeterReadingRepository.cs" selected="True" />
+              </Node>
               <Node name="ServiceInterface" expanded="True" />
               <Node name="Validations" expanded="True">
                 <Node name="Allocation" expanded="True" />
-                <Node name="Invoice" expanded="True">
-                  <Node name="InvoiceAssociatedWithAccountAttribute.cs" selected="True" />
-                </Node>
+                <Node name="Invoice" expanded="True" />
                 <Node name="Rental" expanded="True" />
               </Node>
               <Node name="ViewModels" expanded="True" />
@@ -40,5 +45,6 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.RentCollection.NetAPI PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
 </Properties>

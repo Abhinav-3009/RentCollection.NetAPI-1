@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RentCollection.NetAPI.Models;
 using RentCollection.NetAPI.RecordAccessibility;
 using RentCollection.NetAPI.ServiceImplementation;
@@ -19,6 +20,8 @@ namespace RentCollection.NetAPI.Controllers
     [Authorize]
     public class InvoiceController : ControllerBase
     {
+        private RentCollectionContext db = new RentCollectionContext();
+
         private IInvoiceRepository InvoiceRepository;
 
         private int UserId;
@@ -89,5 +92,6 @@ namespace RentCollection.NetAPI.Controllers
 
             return Ok(new { success = "Invoice deleted successfully"});
         }
+
     }
 }
