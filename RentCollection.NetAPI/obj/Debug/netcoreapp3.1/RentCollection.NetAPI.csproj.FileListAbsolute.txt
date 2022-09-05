@@ -156,3 +156,7 @@
 /Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/runtimes/win-x86/native/sni.dll
 /Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
 /Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/Azure.Identity.dll
+/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/Azure.Security.KeyVault.Secrets.dll
+/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/Microsoft.Extensions.Azure.dll
+/Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/bin/Debug/netcoreapp3.1/Microsoft.Identity.Client.Extensions.Msal.dll

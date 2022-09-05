@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = RentCollection.NetAPI
+build_property.ProjectDir = /Volumes/Study/CS/DotNet/API/RentCollection.NetAPI/RentCollection.NetAPI/

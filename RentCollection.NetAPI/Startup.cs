@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,32 +18,44 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RentCollection.NetAPI.Authentication;
 using RentCollection.NetAPI.Models;
+using RentCollection.NetAPI.Security;
 
 namespace RentCollection.NetAPI
 {
     public class Startup
     {
-        private readonly string AuthenticationKey;
+        private string AuthenticationKey;
 
-        public Startup(IConfiguration configuration)
+        private readonly IKeyVaultManager SecretManager;
+
+        public Startup(IConfiguration configuration, IKeyVaultManager secretManager)
         {
-            Configuration = configuration;
-            this.AuthenticationKey = configuration.GetValue<string>("Keys:AuthenticationKey");
+            this.SecretManager = secretManager;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
+            services.AddAzureClients(azureClientFactoryBuilder =>
+            {
+                azureClientFactoryBuilder.AddSecretClient(
+                Configuration.GetSection("KeyVault"));
+            });
+
+            services.AddSingleton<IKeyVaultManager, KeyVaultManager>();
             services.AddHttpContextAccessor();
 
             // Database
-            services.AddDbContext<RentCollectionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionType1")));
+            services.AddDbContext<RentCollectionContext>(async options => options.UseSqlServer(await this.SecretManager.GetSecret("RentCollectionDatabaseConnectionString")));
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+            this.AuthenticationKey = await this.SecretManager.GetSecret("AuthenticationKey");
 
             // JWT Authentication
             services.AddAuthentication(x =>
@@ -91,7 +104,7 @@ namespace RentCollection.NetAPI
             }
 
             app.UseRouting();
-            app.UseCors(options => options.AllowAnyHeader().AllowAnyHeader().AllowAnyOrigin());
+            app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseAuthentication();
             app.UseAuthorization();
 
